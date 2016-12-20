@@ -48,8 +48,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../TankProjectQt/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../TankProjectQt/main.cpp \
+		../TankProjectQt/MyRect.cpp \
+		../TankProjectQt/Bullet.cpp moc_Bullet.cpp
+OBJECTS       = main.o \
+		MyRect.o \
+		Bullet.o \
+		moc_Bullet.o
 DIST          = /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -108,7 +113,10 @@ DIST          = /usr/lib/i386-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/i386-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../TankProjectQt/TankProjectQt.pro  ../TankProjectQt/main.cpp
+		../TankProjectQt/TankProjectQt.pro ../TankProjectQt/MyRect.h \
+		../TankProjectQt/Bullet.h ../TankProjectQt/main.cpp \
+		../TankProjectQt/MyRect.cpp \
+		../TankProjectQt/Bullet.cpp
 QMAKE_TARGET  = TankProjectQt
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = TankProjectQt
@@ -278,7 +286,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../TankProjectQt/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../TankProjectQt/MyRect.h ../TankProjectQt/Bullet.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../TankProjectQt/main.cpp ../TankProjectQt/MyRect.cpp ../TankProjectQt/Bullet.cpp $(DISTDIR)/
 
 
 clean:compiler_clean 
@@ -301,8 +310,12 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_Bullet.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_Bullet.cpp
+moc_Bullet.cpp: ../TankProjectQt/Bullet.h
+	/usr/lib/i386-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/i386-linux-gnu/qt5/mkspecs/linux-g++ -I/home/chouipe/Bureau/TankProjet/TankProjectQt -I/usr/include/i386-linux-gnu/qt5 -I/usr/include/i386-linux-gnu/qt5/QtWidgets -I/usr/include/i386-linux-gnu/qt5/QtGui -I/usr/include/i386-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/4.9 -I/usr/include/i386-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/i686-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/i686-linux-gnu/4.9/include-fixed -I/usr/include/i386-linux-gnu -I/usr/include ../TankProjectQt/Bullet.h -o moc_Bullet.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
 compiler_uic_make_all:
@@ -313,12 +326,21 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: 
+compiler_clean: compiler_moc_header_clean 
 
 ####### Compile
 
-main.o: ../TankProjectQt/main.cpp 
+main.o: ../TankProjectQt/main.cpp ../TankProjectQt/MyRect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../TankProjectQt/main.cpp
+
+MyRect.o: ../TankProjectQt/MyRect.cpp ../TankProjectQt/MyRect.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MyRect.o ../TankProjectQt/MyRect.cpp
+
+Bullet.o: ../TankProjectQt/Bullet.cpp ../TankProjectQt/Bullet.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Bullet.o ../TankProjectQt/Bullet.cpp
+
+moc_Bullet.o: moc_Bullet.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_Bullet.o moc_Bullet.cpp
 
 ####### Install
 
