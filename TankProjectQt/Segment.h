@@ -20,7 +20,7 @@ Segment(Point a,Point b);
 //Segment(const Segment& s1);
     //
 
-
+//void tracer_segment()
 
 };
 #endif // SEGMENT_H

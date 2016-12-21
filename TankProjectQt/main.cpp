@@ -2,6 +2,9 @@
 #include "MyRect.h"
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QLabel>
+#include <QPicture>
+#include <QPainter>
 
 /*
 Tutorial Topics:
@@ -13,31 +16,23 @@ Tutorial Topics:
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);
 
-    // create a scene
-    QGraphicsScene * scene = new QGraphicsScene();
+    QLabel l; //affichage de texte ou d'image
+       QPicture pi;    //afficher sur le conteneurs
+       QPainter p(&pi);  //conteneur
+       p.setPen(QPen(Qt::blue, 1)); //police(couleur et taille)
 
-    // create an item to add to the scene
-    MyRect * player1 = new MyRect();
-    player1->setRect(0,0,100,100); // change the rect from 0x0 (default) to 100x100 pixels
+       p.drawLine(50, 50,100, 100);
 
-    // add the item to the scene
-    scene->addItem(player1);
 
-    // make rect focusable
-    player1->setFlag(QGraphicsItem::ItemIsFocusable);
-    player1->setFocus();
 
-    // create a view to visualize the scene
-    QGraphicsView * view = new QGraphicsView(scene);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+       p.end(); // Don't forget this line! -> destructeur de p, renvoie true si desactiver
 
-    // show the view
-    view->show();
-    view->setFixedSize(800,600);       //taille de la fenetre
-    scene->setSceneRect(0,0,800, 600); // position INITIALE du rectangle
+          l.setPicture(pi); //"definit le contenu de l'etiquette a l'image(le precedent est effacer)
+          l.show();        //afficher l
 
-    //==new code==
+
+
+
 
 
     return a.exec();
