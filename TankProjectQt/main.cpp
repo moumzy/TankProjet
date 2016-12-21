@@ -16,16 +16,21 @@ int main(int argc, char *argv[]){
     // create a scene
     QGraphicsScene * scene = new QGraphicsScene();
 
-    // create an item to add to the scene
-    MyRect * player1 = new MyRect();
-    player1->setRect(0,0,100,100); // change the rect from 0x0 (default) to 100x100 pixels
+    // CREATION JOUEURS (a ajouter a la scene)
+    MyRect * player1 = new MyRect();        // JOUEUR 1
+    player1->setRect(0,0,100,100);
 
-    // add the item to the scene
+    MyRect * player2 = new MyRect();        // JOUEUR 2
+    player2->setRect(0,0,100,100);
+
+    // A
     scene->addItem(player1);
-
+    scene->addItem(player2);
     // make rect focusable
     player1->setFlag(QGraphicsItem::ItemIsFocusable);
     player1->setFocus();
+    player2->setFlag(QGraphicsItem::ItemIsFocusable);
+    player2->setFocus();
 
     // create a view to visualize the scene
     QGraphicsView * view = new QGraphicsView(scene);
